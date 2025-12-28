@@ -1,0 +1,367 @@
+:root {
+    --bg-color: #000000;
+    --term-green: #00ff33;
+    /* Classic Green */
+    --term-amber: #ffb000;
+    /* Optional Amber */
+    --term-dim: rgba(0, 255, 51, 0.4);
+    --font-stack: 'VT323', monospace;
+    --glass-glare: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--term-green);
+    font-family: var(--font-stack);
+    font-size: 20px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-shadow: 0 0 5px var(--term-green);
+    /* Glow effect */
+}
+
+/* CRT Scanline Effect */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.7;
+}
+
+.terminal-container {
+    width: 95%;
+    /* More width for mobile/desktop flexibility */
+    max-width: 600px;
+    height: 85vh;
+    border: 2px solid var(--term-green);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle, #001100 0%, #000000 100%);
+    box-shadow: 0 0 20px var(--term-dim), inset 0 0 20px var(--term-dim);
+    position: relative;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--term-green);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    gap: 15px;
+}
+
+/* Conversation Log */
+main {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 5px;
+    font-family: inherit;
+    scrollbar-color: var(--term-green) #000;
+    scrollbar-width: thin;
+}
+
+.message {
+    padding: 5px;
+    line-height: 1.2;
+    animation: flash 0.2s;
+}
+
+.message.robot {
+    color: var(--term-green);
+}
+
+.message.user {
+    color: #00ccff;
+    text-shadow: 0 0 5px #00ccff;
+    align-self: flex-start;
+}
+
+/* Different color for user */
+
+.sender {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+/* Controls */
+.controls-area {
+    margin-top: 15px;
+    border-top: 2px dashed var(--term-dim);
+    padding-top: 15px;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.prompt {
+    font-weight: bold;
+    animation: blink 1s infinite step-end;
+}
+
+input[type="text"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--term-green);
+    color: var(--term-green);
+    font-family: inherit;
+    font-size: 1.1em;
+    padding: 5px;
+    outline: none;
+}
+
+/* Buttons */
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.action-btn {
+    background: transparent;
+    border: 1px solid var(--term-green);
+    color: var(--term-green);
+    font-family: inherit;
+    font-size: 1em;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.1s;
+    box-shadow: 0 0 5px var(--term-dim);
+}
+
+.action-btn:hover {
+    background: var(--term-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--term-green);
+}
+
+.action-btn:active {
+    transform: translateY(2px);
+}
+
+#mic-btn.listening {
+    background: #ff3333;
+    color: #000;
+    border-color: #ff3333;
+    animation: pulse 1s infinite;
+}
+
+/* Modals */
+.settings-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    border: 2px solid var(--term-green);
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 0 30px #000;
+    z-index: 20;
+}
+
+.settings-modal.hidden {
+    display: none;
+}
+
+/* Animations */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes flash {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--term-green);
+    border: 1px solid #000;
+}
+
+/* Prompt Mode Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 20px;
+    border: 1px solid var(--term-green);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 2px;
+    background-color: var(--term-green);
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #004400;
+}
+
+input:checked+.slider:before {
+    transform: translateX(18px);
+    box-shadow: 0 0 10px var(--term-green);
+}
+
+.mode-label {
+    margin-left: 10px;
+    font-size: 0.8em;
+    color: var(--term-dim);
+}
+
+/* Game Controls */
+.game-controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px dashed var(--term-dim);
+    padding-top: 10px;
+}
+
+.game-controls.hidden {
+    display: none;
+}
+
+.dpad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.d-row {
+    display: flex;
+    gap: 25px;
+    margin: 5px 0;
+}
+
+.d-btn {
+    background: transparent;
+    border: 1px solid var(--term-green);
+    color: var(--term-green);
+    width: 35px;
+    height: 35px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 5px var(--term-dim);
+}
+
+.d-btn:active {
+    background: var(--term-green);
+    color: black;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.a-btn,
+.b-btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.a-btn {
+    border-color: #ff3333;
+    color: #ff3333;
+}
+
+.a-btn:active {
+    background: #ff3333;
+    color: black;
+}

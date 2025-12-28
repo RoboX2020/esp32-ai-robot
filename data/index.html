@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 AI Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="scanlines"></div>
+    <div class="terminal-container">
+        <header>
+            <div class="header-left">
+                <span class="sys-msg">> SYSTEM.ONLINE</span>
+                <span class="sys-msg" id="connection-status">> CONNECTING...</span>
+            </div>
+            <div class="header-right">
+                <span id="time-display">00:00:00</span>
+                <span id="weather-display">--°C</span>
+            </div>
+        </header>
+
+        <main id="conversation-log">
+            <div class="message robot">
+                <span class="sender">[ROBOT]:</span> <span class="text">INITIATING CORE SYSTEMS... WAITING FOR
+                    INPUT.</span>
+            </div>
+        </main>
+
+        <div class="controls-area">
+            <div class="input-line">
+                <span class="prompt">></span>
+                <input type="text" id="text-input" placeholder="ENTER COMMAND OR MESSAGE..." autocomplete="off">
+                <button id="send-btn">SEND</button>
+            </div>
+
+            <div class="action-bar">
+                <button id="mic-btn" class="action-btn">
+                    MIC <span id="mic-status">[OFF]</span>
+                </button>
+                <button class="action-btn" onclick="setEmotion('happy')">HAPPY</button>
+                <button class="action-btn" onclick="setEmotion('sad')">SAD</button>
+                <button class="action-btn" onclick="setEmotion('angry')">ANGRY</button>
+                <button class="action-btn" onclick="setEmotion('spiderman')">SPIDER</button>
+                <button class="action-btn" id="upload-btn">UPLOAD</button>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+                <button class="action-btn settings-toggle" id="settings-btn">CFG</button>
+            </div>
+
+            <div class="mode-toggle-area" style="margin-top: 10px; display:flex; justify-content:center; gap:20px;">
+                <div style="text-align: center;">
+                    <label class="switch">
+                        <input type="checkbox" id="prompt-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="mode-label" style="margin-top:5px;">CHAT MODE</div>
+                </div>
+
+                <div style="text-align: center;">
+                    <label class="switch">
+                        <input type="checkbox" id="caption-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="mode-label" style="margin-top:5px;">CAPTION MODE</div>
+                </div>
+            </div>
+
+            <!-- Help / STT Warning -->
+            <div id="stt-warning"
+                style="margin-top: 20px; font-size: 0.8em; color:#ffaa00; display:none; border:1px solid #ffaa00; padding:5px;">
+                ⚠️ <b>Speech Error?</b><br>
+                Browsers block Mic on HTTP.<br>
+                1. Go to <code>chrome://flags</code><br>
+                2. Search "Insecure origins treated as secure"<br>
+                3. Add this device's IP.<br>
+                4. Relaunch Chrome.
+            </div>
+
+            <div class="game-controls hidden" id="game-controls">
+                <div class="dpad">
+                    <button class="d-btn up" id="btn-up">▲</button>
+                    <div class="d-row">
+                        <button class="d-btn left" id="btn-left">◀</button>
+                        <button class="d-btn right" id="btn-right">▶</button>
+                    </div>
+                    <button class="d-btn down" id="btn-down">▼</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="d-btn a-btn" id="btn-a">A</button>
+                    <button class="d-btn b-btn" id="btn-b">B</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-modal hidden" id="settings-panel">
+            <div class="settings-content">
+                <h3>> SYSTEM CONFIGURATION</h3>
+                <label>OPENAI_API_KEY:</label>
+                <input type="password" id="api-key-input">
+                <button id="save-key-btn">SAVE</button>
+                <button id="close-settings">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
