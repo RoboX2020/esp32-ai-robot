@@ -38,6 +38,8 @@ void RobotEyes::update() {
     updateMovement();
     
     // Calculate eye positions based on gaze
+    // Work out where the two eyes sit: centered vertically, spaced apart
+    // horizontally. The gaze offset shifts both eyes together.
     int centerLeftX = SCREEN_WIDTH / 2 - EYE_SPACING / 2;
     int centerRightX = SCREEN_WIDTH / 2 + EYE_SPACING / 2;
     int centerY = SCREEN_HEIGHT / 2;
@@ -62,6 +64,8 @@ void RobotEyes::updateMovement() {
     if (_currentY > _targetY) _currentY--;
 
     // Random saccades if neutral
+    // Every ~2 seconds, make the eyes wander: usually back to center,
+    // sometimes a random glance. Tiny motions make the face feel alive.
     if (millis() > _lastUpdate + 2000) {
         _lastUpdate = millis();
         if (random(0, 10) > 7) {
@@ -73,6 +77,8 @@ void RobotEyes::updateMovement() {
 }
 
 void RobotEyes::updateBlink() {
+    // Time for a blink? Remember when it started so the eyelid can animate
+    // shut and back open over the next frames.
     if (!_isBlinking && millis() > _nextBlink) {
         _isBlinking = true;
         _blinkStartTime = millis();

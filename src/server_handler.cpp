@@ -32,6 +32,8 @@ void ServerHandler::setToneCallback(std::function<void(int, int)> callback) {
 
 void ServerHandler::setup() {
     // Mount LittleFS
+    // LittleFS is the tiny filesystem in the ESP32's flash memory where the
+    // web UI files (HTML/JS/CSS) were uploaded when the robot was set up.
     if (!LittleFS.begin(true)) { // Pass true to format if failed, though we prefer upload
         Serial.println("LittleFS Mount Failed");
         return;
@@ -57,9 +59,13 @@ void ServerHandler::begin() {
 
 void ServerHandler::setupRoutes() {
     // Serve static files
+    // Opening the robot's IP address in a browser serves index.html (plus the
+    // JS and CSS) straight out of the robot's flash - no internet needed.
     _server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
 
     // API: Set Emotion
+    // Each /api/... URL is one phone-to-robot command: read the JSON body,
+    // call the matching callback main.cpp registered, and answer 'ok'.
     _server.on("/api/eyes/emotion", HTTP_POST, [this](AsyncWebServerRequest *request) {}, NULL, 
         [this](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
             DynamicJsonDocument doc(1024);
