@@ -1,3 +1,13 @@
+// ============================================================================
+// main.cpp - the robot's brain (ESP32-C3 firmware). This little board has:
+//   - an OLED screen that shows animated EYES (eyes.cpp), text, images or
+//     the time,
+//   - a Wi-Fi web server (server_handler.cpp) so a phone browser can send
+//     it things to show or say (the web UI in data/),
+//   - a buzzer for beeps.
+// Loop: check for web commands, then animate whatever mode the display is
+// in. Temporary modes (text/image/time) auto-revert to eyes after 30s.
+// ============================================================================
 #include <Arduino.h>
 #include <WiFi.h>
 #include <Wire.h>

@@ -1,3 +1,10 @@
+// ============================================================================
+// app.js - the phone remote control for the ESP32 robot. Runs in the
+// browser (served by the robot over Wi-Fi): type text for it to show, tap
+// emotion buttons to change its face, or use the microphone to talk to it
+// (speech is sent to the AI backend, the reply is shown/spoken back).
+// Set ESP_IP to the robot's address (shown on serial at boot).
+// ============================================================================
 const ESP_IP = "";
 
 // --- DOM ELEMENTS ---

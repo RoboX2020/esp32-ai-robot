@@ -1,3 +1,10 @@
+// ============================================================================
+// server_handler.cpp - a tiny web server running on the robot itself.
+// It serves the phone UI (the HTML/JS/CSS files stored in LittleFS flash)
+// and answers API calls like /emotion or /look by invoking callbacks that
+// main.cpp registered (setEmotionCallback, setLookCallback) - so the web
+// page can change the robot's face over Wi-Fi.
+// ============================================================================
 #include "server_handler.h"
 #include <LittleFS.h>
 

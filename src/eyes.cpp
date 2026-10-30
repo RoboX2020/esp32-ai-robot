@@ -1,3 +1,9 @@
+// ============================================================================
+// eyes.cpp - draws the robot's animated face: two eyes on the OLED that
+// blink, look around, and change expression (happy, sad, angry...). Each
+// emotion is just a recipe for how to draw the same circles/eyelids
+// differently. update() is called every loop to animate one small step.
+// ============================================================================
 #include "eyes.h"
 
 // Screen dimensions
